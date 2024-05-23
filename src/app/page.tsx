@@ -17,7 +17,7 @@ export default function Home() {
 
 // gameboard component 🎮
 function GameBoard() {
-  const positions = [
+  const positionArray = [
     { x: 30, y: -150 },
     { x: 30, y: -330 },
     { x: 30, y: -510 },
@@ -29,7 +29,18 @@ function GameBoard() {
     { x: 415, y: -150 },
   ];
 
-  const [position, setPosition] = useState(positions[0]);
+  const [position, setPosition] = useState(positionArray[0]);
+
+  function changePosition() {
+    let length = positionArray.length;
+    setPosition(positionArray[Math.floor(Math.random() * length)]);
+  }
+
+  function mathRandom() {
+    return Math.floor(Math.random() * length);
+  }
+
+  setInterval(changePosition, 1500);
 
   const row = [
     <div key={0} className="flex flex-row">
