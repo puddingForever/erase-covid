@@ -1,22 +1,36 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
+  const [score,setScore] = useState(0);
+
+  if(score === 5){
+    alert("You win!");
+    setScore(0);
+  }
+
+  function increaseScore(){
+    setScore(el => el+1)
+  }
+
   return (
     <div className="relative h-screen w-full">
       <div
         className="absolute top-0 left-0 h-full w-full pattern-wavy pattern-gray-500 pattern-bg-white 
                    pattern-size-32 pattern-opacity-20 z-0"
       />
+      <div className='absolute top-5 right-10'>
+        Your Score :  {score}
+      </div>
       <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center z-10">
-        <GameBoard />
+        <GameBoard raiseScore={increaseScore}/>
       </div>
     </div>
   );
 }
 
 // gameboard component 🎮
-function GameBoard() {
+function GameBoard({raiseScore}:any) {
   const positionArray = [
     { x: 30, y: -150 },
     { x: 30, y: -330 },
@@ -31,16 +45,21 @@ function GameBoard() {
 
   const [position, setPosition] = useState(positionArray[0]);
 
-  function changePosition() {
-    let length = positionArray.length;
-    setPosition(positionArray[Math.floor(Math.random() * length)]);
-  }
+  let length = positionArray.length;
 
-  function mathRandom() {
-    return Math.floor(Math.random() * length);
-  }
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPosition(positionArray[Math.floor(Math.random() * length)]);
+    }, 900); 
+    return () => clearInterval(interval);
+  }, [positionArray, length]);
 
-  setInterval(changePosition, 1500);
+
+   function moveAndIncreaseScore(){
+      setPosition(positionArray[Math.floor(Math.random() * length)]);
+      raiseScore();
+   }
+
 
   const row = [
     <div key={0} className="flex flex-row">
@@ -66,21 +85,24 @@ function GameBoard() {
   return (
     <div>
       {rows}
-      <CovidSprite position={position} />
+      <CovidSprite position={position} raiseScore={moveAndIncreaseScore}/>
     </div>
   );
 }
 
 // Covid sprite 🤦‍♀️
-function CovidSprite({ position }: any) {
+function CovidSprite({ position, raiseScore }: any) {
+
+  
   return (
     <div
       className="absolute"
       style={{
         transform: `translate(${position.x}px, ${position.y}px)`,
-      }}
+      }}   
     >
-      <img src="/Pufferfish-c.svg" alt="pufferfish" />
+      <img src="/Pufferfish-c.svg" alt="pufferfish"  onClick={raiseScore}/>
     </div>
   );
 }
+
