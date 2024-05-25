@@ -79,7 +79,7 @@ function GameBoard({raiseScore}:any) {
   ];
 
   const rows = Array(3)
-    .fill()
+    .fill(null)
     .map((_, index) => <div key={index}>{row}</div>);
 
   return (
