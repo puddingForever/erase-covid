@@ -1,7 +1,7 @@
 ## About erase-covid
 
 This is mini-project I made to clean covid
-Inspired by famous game whac-a-mole
+Inspired by famous game whac-a-mole </br>
 I'm constantly updating this project :D
 
 ## Play
